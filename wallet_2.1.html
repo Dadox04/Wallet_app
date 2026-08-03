@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wallet 2.0</title>
+    <style>
+        :root {
+            --bg-dark: #000000;
+            --card-bg: #151515;
+            --text-main: #ffffff;
+            --text-sub: #888888;
+            --acc-green: #32d74b;
+            --acc-red: #ff453a;
+            --acc-blue: #0a84ff;
+            --acc-purple: #bf5af2;
+            --acc-orange: #ff9f0a;
+            --border: #222222;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .swipe-container {
+            display: flex;
+            width: 100vw;
+            height: calc(100vh - 70px);
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .swipe-container::-webkit-scrollbar { display: none; }
+
+        .screen {
+            min-width: 100vw;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            scroll-snap-align: start;
+            overflow-y: auto;
+            padding-bottom: 40px;
+        }
+
+        .screen-header {
+            font-size: 1.8rem; font-weight: 800; margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .header-actions {
+            display: flex; align-items: center; gap: 12px;
+        }
+
+        .version-tag {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            font-weight: 600;
+            background: #1c1c1e;
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .privacy-icon {
+            font-size: 1.4rem; cursor: pointer; user-select: none;
+        }
+
+        .main-card {
+            background-color: var(--card-bg);
+            border-radius: 20px; padding: 25px; text-align: center;
+            border: 1px solid var(--border); margin-bottom: 20px;
+        }
+        .main-card.liquid { border-top: 3px solid var(--acc-green); }
+        .main-card.savings { border-top: 3px solid var(--acc-blue); }
+        .main-card.investments { border-top: 3px solid var(--acc-purple); }
+
+        .balance-title { font-size: 0.85rem; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; }
+        .balance-amount { font-size: 3.2rem; font-weight: 800; margin: 10px 0 0 0; letter-spacing: -1px; }
+
+        .btn-group { display: flex; gap: 8px; margin-bottom: 20px; }
+        .btn {
+            flex: 1; padding: 14px 5px; border: none; border-radius: 14px;
+            font-size: 0.90rem; font-weight: 700; color: #fff; cursor: pointer;
+            background-color: #2a2a2a; transition: opacity 0.2s; text-align: center;
+        }
+        .btn:active { opacity: 0.7; }
+        .btn.income { background-color: var(--acc-green); color: #000; }
+        .btn.expense { background-color: var(--acc-red); }
+        .btn.action { background-color: var(--acc-blue); }
+
+        .search-bar {
+            width: 100%; background-color: var(--bg-dark); color: var(--text-main);
+            border: 1px solid var(--border); padding: 12px 15px; border-radius: 12px;
+            font-size: 1rem; box-sizing: border-box; outline: none; margin-bottom: 20px;
+        }
+        .search-bar:focus { border-color: var(--acc-blue); }
+
+        .list-header { font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .list-container { display: flex; flex-direction: column; gap: 12px; }
+        
+        .list-item {
+            background-color: var(--card-bg); padding: 16px; border-radius: 16px;
+            border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;
+        }
+        .item-info { display: flex; flex-direction: column; gap: 5px; }
+        .item-title { font-weight: 600; font-size: 1rem; }
+        
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;}
+        .badge.essenziale { background: rgba(255, 159, 10, 0.2); color: var(--acc-orange); }
+        .badge.passioni { background: rgba(10, 132, 255, 0.2); color: var(--acc-blue); }
+        .badge.svago { background: rgba(191, 90, 242, 0.2); color: var(--acc-purple); }
+        .badge.risparmio { background: rgba(50, 215, 75, 0.2); color: var(--acc-green); }
+        .badge.entrata { background: rgba(50, 215, 75, 0.2); color: var(--acc-green); }
+
+        .item-amount { font-weight: 800; font-size: 1.1rem; }
+        .item-amount.positive { color: var(--acc-green); }
+        .item-amount.negative { color: var(--acc-red); }
+
+        .item-actions { display: flex; align-items: center; }
+
+        .delete-btn {
+            background: rgba(255, 69, 58, 0.1); color: var(--acc-red);
+            border: none; border-radius: 8px; width: 28px; height: 28px;
+            display: flex; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; margin-left: 8px;
+        }
+
+        .edit-btn {
+            background: rgba(10, 132, 255, 0.1); color: var(--acc-blue);
+            border: none; border-radius: 8px; width: 28px; height: 28px;
+            display: flex; justify-content: center; align-items: center; font-size: 1rem; cursor: pointer; margin-left: 12px;
+        }
+
+        .progress-bar-bg { width: 100%; height: 8px; background-color: #333; border-radius: 4px; margin-top: 10px; overflow: hidden;}
+        .progress-bar-fill { height: 100%; background-color: var(--acc-blue); width: 0%; border-radius: 4px; transition: width 0.3s;}
+
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 70px;
+            background-color: rgba(20, 20, 20, 0.95); backdrop-filter: blur(10px);
+            display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid var(--border); z-index: 100;
+        }
+        .nav-item {
+            color: var(--text-sub); font-size: 0.8rem; font-weight: 600; flex: 1;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; transition: color 0.2s;
+        }
+        .nav-item.active { color: var(--text-main); }
+        .nav-icon { font-size: 1.4rem; }
+
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: flex-end; z-index: 1000;
+        }
+        .overlay.show { display: flex; }
+        .modal {
+            background-color: #1c1c1e; width: 100%; max-width: 500px;
+            border-radius: 24px 24px 0 0; padding: 25px; box-sizing: border-box;
+            animation: slideUp 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+            max-height: 90vh; overflow-y: auto;
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-title { font-size: 1.2rem; font-weight: 700; margin: 0; }
+        .close-btn { font-size: 1.8rem; color: var(--text-sub); cursor: pointer; line-height: 1;}
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.85rem; color: var(--text-sub); margin-bottom: 8px; }
+        .form-group input, .form-group select {
+            width: 100%; background-color: var(--bg-dark); color: var(--text-main);
+            border: 1px solid var(--border); padding: 14px; border-radius: 12px;
+            font-size: 1rem; box-sizing: border-box; outline: none;
+        }
+        .form-group input:focus, .form-group select:focus { border-color: var(--acc-blue); }
+
+        .btn-submit {
+            width: 100%; padding: 16px; background-color: var(--text-main); color: #000;
+            border: none; border-radius: 14px; font-size: 1.1rem; font-weight: 800;
+            cursor: pointer; margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="swipe-container" id="swipeContainer">
+        
+        <!-- SCHERMATA 1: DISPONIBILI -->
+        <section class="screen" id="screen-available">
+            <div class="screen-header">
+                Liquidità
+                <div class="header-actions">
+                    <span class="version-tag">Wallet v2.1</span>
+                    <span class="privacy-icon" onclick="togglePrivacy()">👁️</span>
+                </div>
+            </div>
+            <div class="main-card liquid">
+                <div class="balance-title">Saldo Disponibile</div>
+                <div class="balance-amount" id="liquidBalance">€0.00</div>
+            </div>
+            <div class="btn-group">
+                <button class="btn income" onclick="openModal('income')">+ ENTRATA</button>
+                <button class="btn expense" onclick="openModal('expense')">- SPESA</button>
+                <button class="btn action" style="background:#5e5ce6;" onclick="openModal('recurring')">🔄 FISSE</button>
+            </div>
+            
+            <input type="text" id="searchTx" class="search-bar" placeholder="🔍 Cerca movimento o categoria..." oninput="updateUI()">
+            
+            <div class="list-header">Movimenti Recenti</div>
+            <div class="list-container" id="transactionList"></div>
+        </section>
+
+        <!-- SCHERMATA 2: RISPARMI -->
+        <section class="screen" id="screen-savings">
+            <div class="screen-header">
+                Da Parte
+                <div class="header-actions">
+                    <span class="version-tag">Wallet v2.1</span>
+                    <span class="privacy-icon" onclick="togglePrivacy()">👁️</span>
+                </div>
+            </div>
+            <div class="main-card savings">
+                <div class="balance-title">Totale Risparmi</div>
+                <div class="balance-amount" id="savingsBalance">€0.00</div>
+            </div>
+            <div class="btn-group">
+                <button class="btn action" onclick="openModal('newPot')">+ OBIETTIVO</button>
+                <button class="btn" style="background:#333;" onclick="openModal('addSavings')">AGGIUNGI</button>
+            </div>
+            <div class="list-header">I Miei Salvadanai</div>
+            <div class="list-container" id="savingsList"></div>
+        </section>
+
+        <!-- SCHERMATA 3: INVESTIMENTI -->
+        <section class="screen" id="screen-investments">
+            <div class="screen-header">
+                Investimenti
+                <div class="header-actions">
+                    <span class="version-tag">Wallet v2.1</span>
+                    <span class="privacy-icon" onclick="togglePrivacy()">👁️</span>
+                </div>
+            </div>
+            <div class="main-card investments">
+                <div class="balance-title">Capitale Investito</div>
+                <div class="balance-amount" id="investmentsBalance">€0.00</div>
+            </div>
+            <div class="btn-group">
+                <button class="btn action" style="background:var(--acc-purple); width: 100%;" onclick="openModal('newAsset')">+ INSERISCI INVESTIMENTO</button>
+            </div>
+            <div class="list-header">Portafoglio</div>
+            <div class="list-container" id="investmentsList"></div>
+        </section>
+
+        <!-- SCHERMATA 4: STATISTICHE E IMPOSTAZIONI -->
+        <section class="screen" id="screen-stats">
+            <div class="screen-header">
+                Statistiche
+                <div class="header-actions">
+                    <span class="version-tag">Wallet v2.1</span>
+                    <span class="privacy-icon" onclick="togglePrivacy()">👁️</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <select id="statsFilter" onchange="updateUI()">
+                    <option value="week">Questa Settimana</option>
+                    <option value="month" selected>Questo Mese</option>
+                    <option value="year">Quest'Anno</option>
+                    <option value="all">Sempre (Tutto)</option>
+                </select>
+            </div>
+            <div id="statsContainer"></div>
+            
+            <div class="list-header" style="margin-top: 30px;">Dati & Backup</div>
+            <div class="btn-group" style="margin-bottom: 10px;">
+                <button class="btn action" style="background:#333;" onclick="exportData()">💾 ESPORTA</button>
+                <label class="btn action" style="background:#333; display:flex; align-items:center; justify-content:center; margin:0;">
+                    📁 IMPORTA
+                    <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
+                </label>
+            </div>
+            <button class="btn expense" style="width: 100%; background: rgba(255, 69, 58, 0.2); color: var(--acc-red); border: 1px solid var(--acc-red);" onclick="clearHistory()">🗑 SVUOTA CRONOLOGIA</button>
+        </section>
+
+    </div>
+
+    <!-- BOTTOM NAVBAR -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="scrollToScreen(0)"><span class="nav-icon">💸</span><span>Disponibili</span></div>
+        <div class="nav-item" onclick="scrollToScreen(1)"><span class="nav-icon">🏦</span><span>Risparmi</span></div>
+        <div class="nav-item" onclick="scrollToScreen(2)"><span class="nav-icon">📈</span><span>Investimenti</span></div>
+        <div class="nav-item" onclick="scrollToScreen(3)"><span class="nav-icon">📊</span><span>Dati</span></div>
+    </nav>
+
+    <!-- MODALE -->
+    <div class="overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Titolo Modale</h2>
+                <span class="close-btn" onclick="closeModal()">×</span>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- INIZIALIZZAZIONE ---
+        let db = JSON.parse(localStorage.getItem('finance_db')) || {
+            liquid: 0,
+            transactions: [],
+            savings: [
+                { id: 1, name: 'Fondo Laptop Università', amount: 0, target: 1200 },
+                { id: 2, name: 'Budget Slalom/Gare', amount: 0, target: 400 }
+            ],
+            investments: [],
+            recurring: []
+        };
+        
+        // Fix retrocompatibilità array 'recurring'
+        if(!db.recurring) db.recurring = [];
+
+        let isPrivacyMode = false;
+
+        function togglePrivacy() {
+            isPrivacyMode = !isPrivacyMode;
+            const icons = document.querySelectorAll('.privacy-icon');
+            icons.forEach(i => i.innerText = isPrivacyMode ? '🙈' : '👁️');
+            updateUI();
+        }
+
+        function formatMoney(amount) {
+            return isPrivacyMode ? '***.**' : amount.toFixed(2);
+        }
+
+        function saveData() { localStorage.setItem('finance_db', JSON.stringify(db)); }
+
+        // --- SISTEMA ADDEBITI AUTOMATICI ---
+        function checkAutoRecurring() {
+            let updated = false;
+            let now = new Date();
+            
+            db.recurring.forEach(r => {
+                if (r.dayOfMonth && r.nextChargeDate) {
+                    let nextDate = new Date(r.nextChargeDate);
+                    let maxLoops = 24; // Previene cicli infiniti in caso di errori (max 2 anni arretrati)
+                    
+                    while (now.getTime() >= nextDate.getTime() && maxLoops > 0) {
+                        // Scala i soldi
+                        db.liquid -= r.amount;
+                        // Registra la transazione
+                        db.transactions.push({
+                            id: nextDate.getTime() + Math.floor(Math.random() * 1000), 
+                            type: 'expense',
+                            amount: r.amount,
+                            desc: r.desc + " (Auto)",
+                            category: r.category
+                        });
+                        
+                        // Imposta la prossima data aggiungendo un mese
+                        nextDate.setMonth(nextDate.getMonth() + 1);
+                        r.nextChargeDate = nextDate.getTime();
+                        updated = true;
+                        maxLoops--;
+                    }
+                }
+            });
+            
+            if (updated) {
+                saveData();
+            }
+        }
+
+        // Eseguiamo il controllo delle spese automatiche all'avvio
+        checkAutoRecurring();
+
+        // --- RENDER UI ---
+        function updateUI() {
+            // 1. Liquidità & Movimenti
+            document.getElementById('liquidBalance').innerText = `€ ${formatMoney(db.liquid)}`;
+            
+            const tList = document.getElementById('transactionList');
+            const searchVal = document.getElementById('searchTx').value.toLowerCase();
+            tList.innerHTML = '';
+            
+            // Ordine dal più recente
+            let filteredTx = [...db.transactions].sort((a, b) => b.id - a.id);
+            if (searchVal) {
+                filteredTx = filteredTx.filter(t => t.desc.toLowerCase().includes(searchVal) || t.category.toLowerCase().includes(searchVal));
+            }
+            
+            if(filteredTx.length === 0) tList.innerHTML = '<div style="text-align:center; color:#666; padding:20px;">Nessun movimento trovato.</div>';
+            
+            filteredTx.forEach(t => {
+                let badgeClass = t.type === 'income' ? 'entrata' : t.category.toLowerCase().replace(' & ', '');
+                let badgeText = t.type === 'income' ? 'Entrata' : t.category;
+                let sign = t.type === 'income' ? '+' : '-';
+                let amountClass = t.type === 'income' ? 'positive' : 'negative';
+                let dateStr = new Date(t.id).toLocaleDateString('it-IT');
+
+                tList.innerHTML += `
+                    <div class="list-item" style="flex-wrap: wrap;">
+                        <div class="item-info">
+                            <span class="item-title">${t.desc}</span>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span class="badge ${badgeClass}">${badgeText}</span>
+                                <span style="font-size:0.75rem; color:#666;">${dateStr}</span>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <span class="item-amount ${amountClass}">${sign}€ ${formatMoney(t.amount)}</span>
+                            <button class="edit-btn" onclick="openEditModal('tx', ${t.id})">✎</button>
+                            <button class="delete-btn" onclick="deleteTransaction(${t.id})">×</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // 2. Risparmi
+            let totalSav = 0;
+            const sList = document.getElementById('savingsList');
+            sList.innerHTML = '';
+            db.savings.forEach(s => {
+                totalSav += s.amount;
+                let progress = s.target > 0 ? Math.min((s.amount / s.target) * 100, 100) : 100;
+                let targetText = s.target > 0 ? `<span style="font-size:0.8rem; color:#888;">/ €${formatMoney(s.target)}</span>` : '';
+                
+                sList.innerHTML += `
+                    <div class="list-item" style="flex-direction:column; align-items:stretch;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                            <span class="item-title">${s.name}</span>
+                            <div class="item-actions">
+                                <span class="item-amount">€ ${formatMoney(s.amount)} ${targetText}</span>
+                                <button class="edit-btn" onclick="openEditModal('pot', ${s.id})">✎</button>
+                                <button class="delete-btn" onclick="deleteSavings(${s.id})">×</button>
+                            </div>
+                        </div>
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progress}%"></div></div>
+                    </div>
+                `;
+            });
+            document.getElementById('savingsBalance').innerText = `€ ${formatMoney(totalSav)}`;
+
+            // 3. Investimenti
+            let totalInv = 0;
+            const iList = document.getElementById('investmentsList');
+            iList.innerHTML = '';
+            if(db.investments.length === 0) iList.innerHTML = '<div style="text-align:center; color:#666; padding:20px;">Nessun investimento registrato.</div>';
+            db.investments.forEach(i => {
+                totalInv += i.amount;
+                iList.innerHTML += `
+                    <div class="list-item">
+                        <span class="item-title">${i.name}</span>
+                        <div class="item-actions">
+                            <span class="item-amount" style="color:var(--acc-purple);">€ ${formatMoney(i.amount)}</span>
+                            <button class="edit-btn" onclick="openEditModal('asset', ${i.id})">✎</button>
+                            <button class="delete-btn" onclick="deleteInvestment(${i.id})">×</button>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('investmentsBalance').innerText = `€ ${formatMoney(totalInv)}`;
+
+            // 4. Statistiche
+            renderStats();
+        }
+
+        function renderStats() {
+            const filter = document.getElementById('statsFilter').value;
+            let now = new Date();
+            let startTime = 0;
+
+            if (filter === 'week') {
+                let day = now.getDay() || 7;
+                now.setHours(0,0,0,0);
+                startTime = now.getTime() - ((day - 1) * 86400000);
+            } else if (filter === 'month') {
+                startTime = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+            } else if (filter === 'year') {
+                startTime = new Date(now.getFullYear(), 0, 1).getTime();
+            }
+
+            let filteredTx = db.transactions.filter(t => t.id >= startTime);
+
+            let totalIncome = 0;
+            let totalExpense = 0;
+            let categories = { 'Essenziale': 0, 'Passioni': 0, 'Svago': 0, 'Risparmio': 0 };
+
+            filteredTx.forEach(t => {
+                if(t.type === 'income') totalIncome += t.amount;
+                else {
+                    totalExpense += t.amount;
+                    if(categories[t.category] !== undefined) categories[t.category] += t.amount;
+                }
+            });
+
+            const container = document.getElementById('statsContainer');
+            container.innerHTML = `
+                <div style="display:flex; gap:10px; margin-bottom:25px; margin-top:10px;">
+                    <div style="flex:1; background:rgba(50,215,75,0.1); padding:15px; border-radius:15px; border:1px solid rgba(50,215,75,0.3);">
+                        <div style="font-size:0.75rem; color:var(--acc-green); font-weight:bold; margin-bottom:5px;">ENTRATE</div>
+                        <div style="font-size:1.4rem; font-weight:800;">€${formatMoney(totalIncome)}</div>
+                    </div>
+                    <div style="flex:1; background:rgba(255,69,58,0.1); padding:15px; border-radius:15px; border:1px solid rgba(255,69,58,0.3);">
+                        <div style="font-size:0.75rem; color:var(--acc-red); font-weight:bold; margin-bottom:5px;">USCITE</div>
+                        <div style="font-size:1.4rem; font-weight:800;">€${formatMoney(totalExpense)}</div>
+                    </div>
+                </div>
+
+                <div class="list-header">Dettaglio Categorie Uscite</div>
+                <div class="list-container">
+                    ${Object.keys(categories).map(cat => {
+                        if(categories[cat] > 0) {
+                            let w = Math.min((categories[cat] / totalExpense) * 100, 100);
+                            let color = cat === 'Essenziale' ? 'var(--acc-orange)' : (cat === 'Passioni' ? 'var(--acc-blue)' : (cat === 'Risparmio' ? 'var(--acc-green)' : 'var(--acc-purple)'));
+                            return `
+                                <div style="background:var(--card-bg); padding:15px; border-radius:12px; border:1px solid var(--border);">
+                                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                        <span style="font-weight:600;">${cat}</span>
+                                        <span style="font-weight:bold;">€${formatMoney(categories[cat])}</span>
+                                    </div>
+                                    <div class="progress-bar-bg" style="height:6px;"><div class="progress-bar-fill" style="width:${w}%; background:${color};"></div></div>
+                                </div>
+                            `;
+                        } return '';
+                    }).join('')}
+                    ${totalExpense === 0 ? '<div style="text-align:center; color:#666; padding:15px;">Nessuna uscita nel periodo.</div>' : ''}
+                </div>
+            `;
+        }
+
+        // --- SISTEMA MODALI ---
+        function openModal(action) {
+            const mBody = document.getElementById('modalBody');
+            const mTitle = document.getElementById('modalTitle');
+            let html = '';
+
+            if (action === 'income' || action === 'expense') {
+                const isIncome = action === 'income';
+                mTitle.innerText = isIncome ? 'Nuova Entrata' : 'Registra Spesa';
+                const descLabel = isIncome ? 'Descrizione' : 'Descrizione (es. Benzina, Pizza, Ricambi...)';
+                
+                html = `
+                    <input type="hidden" id="formAction" value="${action}">
+                    <div class="form-group"><label>Importo (€)</label><input type="number" id="formAmount" placeholder="0.00" step="0.01"></div>
+                    <div class="form-group"><label>${descLabel}</label><input type="text" id="formDesc" placeholder="es. Acquisto..."></div>
+                    ${!isIncome ? `
+                    <div class="form-group"><label>Categoria</label>
+                        <select id="formCategory">
+                            <option value="Essenziale">Essenziale (Cibo, Bollette, Tasse)</option>
+                            <option value="Passioni">Progetti & Passioni (Auto, Ricambi, Gare, Tech)</option>
+                            <option value="Svago">Svago / Superflua (Uscite, Extra)</option>
+                        </select>
+                    </div>` : '<input type="hidden" id="formCategory" value="Entrata">'}
+                    <button class="btn-submit" onclick="submitTransaction()">Conferma</button>
+                `;
+            } 
+            else if (action === 'recurring') {
+                mTitle.innerText = 'Uscite Fisse Salvate';
+                let listHtml = db.recurring.map(r => {
+                    let autoText = r.dayOfMonth 
+                        ? `<div class="badge essenziale" style="margin-top:4px;">⏱️ Auto: Giorno ${r.dayOfMonth}</div>` 
+                        : `<div class="badge svago" style="margin-top:4px;">Manuale</div>`;
+                    
+                    return `
+                    <div class="list-item" style="margin-bottom:10px; padding:12px;">
+                        <div>
+                            <div class="item-title">${r.desc}</div>
+                            <div class="badge passioni" style="margin-top:4px;">€${r.amount.toFixed(2)} - ${r.category}</div><br>
+                            ${autoText}
+                        </div>
+                        <div class="item-actions">
+                            ${!r.dayOfMonth ? `<button class="btn action" style="padding: 8px 12px; margin-right:5px;" onclick="addRecurringTx(${r.id})">Aggiungi</button>` : ''}
+                            <button class="delete-btn" style="margin:0;" onclick="deleteRecurring(${r.id})">×</button>
+                        </div>
+                    </div>
+                `}).join('');
+                
+                if(db.recurring.length === 0) listHtml = '<p style="color:#888; text-align:center; font-size:0.9rem;">Nessuna uscita fissa creata.<br>Aggiungine una qui sotto!</p>';
+
+                html = `
+                    <div style="max-height: 40vh; overflow-y: auto; margin-bottom: 20px;">
+                        ${listHtml}
+                    </div>
+                    <div style="border-top: 1px solid var(--border); padding-top: 15px;">
+                        <h4 style="margin-top:0; margin-bottom:15px;">Nuova Spesa Fissa / Abbonamento</h4>
+                        <div class="form-group"><label>Descrizione</label><input type="text" id="recDesc" placeholder="es. Netflix, Palestra..."></div>
+                        <div class="form-group"><label>Importo (€)</label><input type="number" id="recAmount" placeholder="0.00"></div>
+                        <div class="form-group">
+                            <label>Giorno addebito mensile (1-31)</label>
+                            <input type="number" id="recDay" min="1" max="31" placeholder="Opzionale (Lascia vuoto per manuale)">
+                        </div>
+                        <div class="form-group"><label>Categoria</label>
+                            <select id="recCategory">
+                                <option value="Essenziale">Essenziale</option>
+                                <option value="Passioni">Progetti & Passioni</option>
+                                <option value="Svago">Svago</option>
+                            </select>
+                        </div>
+                        <button class="btn-submit" onclick="submitNewRecurring()">Salva nei Fissi</button>
+                    </div>
+                `;
+            }
+            else if (action === 'newPot') {
+                mTitle.innerText = 'Crea Salvadanaio';
+                html = `
+                    <div class="form-group"><label>Nome Obiettivo</label><input type="text" id="potName" placeholder="es. Viaggio..."></div>
+                    <div class="form-group"><label>Cifra da raggiungere (€)</label><input type="number" id="potTarget" placeholder="0.00"></div>
+                    <button class="btn-submit" onclick="submitNewPot()">Crea</button>
+                `;
+            }
+            else if (action === 'addSavings') {
+                mTitle.innerText = 'Metti da parte';
+                if(db.savings.length === 0) { html = '<p>Crea prima un salvadanaio!</p>'; }
+                else {
+                    let options = db.savings.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+                    html = `
+                        <div class="form-group"><label>Dove vuoi mettere i soldi?</label><select id="savId">${options}</select></div>
+                        <div class="form-group"><label>Importo (€)</label><input type="number" id="savAmount" placeholder="0.00"></div>
+                        <div class="form-group" style="display:flex; align-items:center; gap:10px;">
+                            <input type="checkbox" id="deductLiquid" checked style="width:auto; transform:scale(1.5);">
+                            <label style="margin:0;">Sottrai dal Saldo Disponibile</label>
+                        </div>
+                        <button class="btn-submit" onclick="submitAddSavings()">Trasferisci</button>
+                    `;
+                }
+            }
+            else if (action === 'newAsset') {
+                mTitle.innerText = 'Nuovo Investimento';
+                html = `
+                    <div class="form-group"><label>Nome Investimento</label><input type="text" id="assetName" placeholder="es. ETF..."></div>
+                    <div class="form-group"><label>Capitale Investito (€)</label><input type="number" id="assetAmount" placeholder="0.00"></div>
+                    <button class="btn-submit" onclick="submitNewAsset()">Salva</button>
+                `;
+            }
+
+            mBody.innerHTML = html;
+            document.getElementById('modalOverlay').classList.add('show');
+        }
+
+        function openEditModal(type, id) {
+            const mBody = document.getElementById('modalBody');
+            const mTitle = document.getElementById('modalTitle');
+            let html = '';
+
+            if (type === 'tx') {
+                const tx = db.transactions.find(t => t.id === id);
+                if (!tx) return;
+                mTitle.innerText = tx.type === 'income' ? 'Modifica Entrata' : 'Modifica Spesa';
+                html = `
+                    <input type="hidden" id="editTxId" value="${tx.id}">
+                    <div class="form-group"><label>Importo Corretto (€)</label><input type="number" id="editTxAmount" value="${tx.amount}" step="0.01"></div>
+                    <div class="form-group"><label>Descrizione</label><input type="text" id="editTxDesc" value="${tx.desc}"></div>
+                    ${tx.type === 'expense' ? `
+                    <div class="form-group"><label>Categoria</label>
+                        <select id="editTxCategory">
+                            <option value="Essenziale" ${tx.category === 'Essenziale' ? 'selected' : ''}>Essenziale (Cibo, Bollette...)</option>
+                            <option value="Passioni" ${tx.category === 'Passioni' ? 'selected' : ''}>Progetti & Passioni (Auto, Tech...)</option>
+                            <option value="Svago" ${tx.category === 'Svago' ? 'selected' : ''}>Svago (Uscite, Extra)</option>
+                            <option value="Risparmio" ${tx.category === 'Risparmio' ? 'selected' : ''}>Risparmio</option>
+                        </select>
+                    </div>` : '<input type="hidden" id="editTxCategory" value="Entrata">'}
+                    <button class="btn-submit" onclick="submitEditTx()">Aggiorna</button>
+                `;
+            }
+            else if (type === 'pot') {
+                const pot = db.savings.find(s => s.id === id);
+                if (!pot) return;
+                mTitle.innerText = 'Modifica Obiettivo';
+                html = `
+                    <input type="hidden" id="editId" value="${pot.id}">
+                    <div class="form-group"><label>Nome Obiettivo</label><input type="text" id="editPotName" value="${pot.name}"></div>
+                    <div class="form-group"><label>Cifra da raggiungere (€)</label><input type="number" id="editPotTarget" value="${pot.target}"></div>
+                    <button class="btn-submit" onclick="submitEditPot()">Salva Modifiche</button>
+                `;
+            } else if (type === 'asset') {
+                const asset = db.investments.find(i => i.id === id);
+                if (!asset) return;
+                mTitle.innerText = 'Modifica Investimento';
+                html = `
+                    <input type="hidden" id="editId" value="${asset.id}">
+                    <div class="form-group"><label>Nome</label><input type="text" id="editAssetName" value="${asset.name}"></div>
+                    <div class="form-group"><label>Capitale Attuale (€)</label><input type="number" id="editAssetAmount" value="${asset.amount}"></div>
+                    <button class="btn-submit" onclick="submitEditAsset()">Salva Modifiche</button>
+                `;
+            }
+
+            mBody.innerHTML = html;
+            document.getElementById('modalOverlay').classList.add('show');
+        }
+
+        function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
+
+        // --- SUBMIT E CALCOLI ---
+        function submitTransaction() {
+            const action = document.getElementById('formAction').value;
+            const amount = parseFloat(document.getElementById('formAmount').value);
+            const desc = document.getElementById('formDesc').value || 'Senza nome';
+            const category = document.getElementById('formCategory').value;
+
+            if(!amount || amount <= 0) return alert("Inserisci un importo valido");
+            if (action === 'income') db.liquid += amount; else db.liquid -= amount;
+
+            db.transactions.push({ id: Date.now(), type: action, amount, desc, category });
+            saveData(); updateUI(); closeModal();
+        }
+
+        function submitNewRecurring() {
+            const desc = document.getElementById('recDesc').value;
+            const amount = parseFloat(document.getElementById('recAmount').value);
+            const category = document.getElementById('recCategory').value;
+            const dayInput = document.getElementById('recDay').value;
+            
+            if(!desc || !amount || amount <= 0) return alert("Inserisci descrizione e importo validi.");
+            
+            let newRec = { id: Date.now(), desc, amount, category };
+            
+            // Impostazione dell'addebito automatico
+            if (dayInput) {
+                let dayOfMonth = parseInt(dayInput);
+                if(dayOfMonth >= 1 && dayOfMonth <= 31) {
+                    newRec.dayOfMonth = dayOfMonth;
+                    
+                    // Calcolo della prossima data utile in cui scalare i soldi
+                    let now = new Date();
+                    let nextD = new Date(now.getFullYear(), now.getMonth(), dayOfMonth, 8, 0, 0); 
+                    
+                    // Se la data di questo mese è già passata, punta al mese prossimo
+                    if (now.getTime() > nextD.getTime()) {
+                        nextD.setMonth(nextD.getMonth() + 1);
+                    }
+                    newRec.nextChargeDate = nextD.getTime();
+                } else {
+                    return alert("Inserisci un giorno del mese valido (da 1 a 31).");
+                }
+            }
+
+            db.recurring.push(newRec);
+            saveData(); 
+            openModal('recurring'); 
+        }
+
+        function addRecurringTx(id) {
+            const r = db.recurring.find(x => x.id === id);
+            if(!r) return;
+            
+            db.liquid -= r.amount;
+            db.transactions.push({ id: Date.now(), type: 'expense', amount: r.amount, desc: r.desc, category: r.category });
+            
+            saveData(); updateUI(); closeModal();
+        }
+
+        function deleteRecurring(id) {
+            db.recurring = db.recurring.filter(x => x.id !== id);
+            saveData(); 
+            openModal('recurring');
+        }
+
+        function submitEditTx() {
+            const id = parseInt(document.getElementById('editTxId').value);
+            const newAmount = parseFloat(document.getElementById('editTxAmount').value);
+            const newDesc = document.getElementById('editTxDesc').value;
+            const tx = db.transactions.find(t => t.id === id);
+
+            if(!tx || !newAmount || newAmount <= 0) return;
+
+            if (tx.type === 'income') db.liquid -= tx.amount; else db.liquid += tx.amount;
+            if (tx.type === 'income') db.liquid += newAmount; else db.liquid -= newAmount;
+
+            tx.amount = newAmount;
+            tx.desc = newDesc || 'Senza nome';
+            if(tx.type === 'expense') tx.category = document.getElementById('editTxCategory').value;
+
+            saveData(); updateUI(); closeModal();
+        }
+
+        function submitNewPot() {
+            const name = document.getElementById('potName').value || 'Nuovo Obiettivo';
+            const target = parseFloat(document.getElementById('potTarget').value) || 0;
+            db.savings.push({ id: Date.now(), name, amount: 0, target });
+            saveData(); updateUI(); closeModal();
+        }
+
+        function submitAddSavings() {
+            const id = parseInt(document.getElementById('savId').value);
+            const amount = parseFloat(document.getElementById('savAmount').value);
+            const deduct = document.getElementById('deductLiquid').checked;
+
+            if(!amount || amount <= 0) return;
+            if(deduct && db.liquid < amount) return alert("Non hai abbastanza liquidità disponibile!");
+
+            const pot = db.savings.find(s => s.id === id);
+            if(pot) {
+                pot.amount += amount;
+                if(deduct) {
+                    db.liquid -= amount;
+                    db.transactions.push({ id: Date.now(), type: 'expense', amount, desc: `Spostati in: ${pot.name}`, category: 'Risparmio' });
+                }
+            }
+            saveData(); updateUI(); closeModal();
+        }
+
+        function submitNewAsset() {
+            const name = document.getElementById('assetName').value || 'Nuovo Asset';
+            const amount = parseFloat(document.getElementById('assetAmount').value) || 0;
+            db.investments.push({ id: Date.now(), name, amount });
+            saveData(); updateUI(); closeModal();
+        }
+
+        function submitEditPot() {
+            const id = parseInt(document.getElementById('editId').value);
+            const pot = db.savings.find(s => s.id === id);
+            if (pot) {
+                pot.name = document.getElementById('editPotName').value || 'Obiettivo';
+                pot.target = parseFloat(document.getElementById('editPotTarget').value) || 0;
+                saveData(); updateUI(); closeModal();
+            }
+        }
+
+        function submitEditAsset() {
+            const id = parseInt(document.getElementById('editId').value);
+            const asset = db.investments.find(i => i.id === id);
+            if (asset) {
+                asset.name = document.getElementById('editAssetName').value || 'Asset';
+                asset.amount = parseFloat(document.getElementById('editAssetAmount').value) || 0;
+                saveData(); updateUI(); closeModal();
+            }
+        }
+
+        // --- CANCELLAZIONE ---
+        function deleteTransaction(id) {
+            if(confirm("Vuoi eliminare questa transazione? Il tuo Saldo Disponibile verrà riaggiornato annullando questa spesa/entrata.")) {
+                const tx = db.transactions.find(t => t.id === id);
+                if(tx) {
+                    if (tx.type === 'income') db.liquid -= tx.amount; else db.liquid += tx.amount;
+                    db.transactions = db.transactions.filter(t => t.id !== id);
+                    saveData(); updateUI();
+                }
+            }
+        }
+
+        function deleteSavings(id) {
+            if(confirm("Vuoi davvero eliminare questo obiettivo? (I soldi al suo interno NON verranno riaggiunti automaticamente alla liquidità)")) {
+                db.savings = db.savings.filter(s => s.id !== id);
+                saveData(); updateUI();
+            }
+        }
+
+        function deleteInvestment(id) {
+            if(confirm("Hai disinvestito o vuoi rimuovere questo asset? (I soldi non tornano in automatico nei disponibili, dovrai aggiungerli a mano come 'Entrata' se li hai incassati)")) {
+                db.investments = db.investments.filter(i => i.id !== id);
+                saveData(); updateUI();
+            }
+        }
+
+        function clearHistory() {
+            if(confirm("⚠️ ATTENZIONE: Stai per eliminare TUTTI i movimenti registrati dalla cronologia. Il tuo Saldo Disponibile NON verrà toccato. Vuoi procedere?")) {
+                db.transactions = [];
+                saveData(); 
+                updateUI();
+            }
+        }
+
+        // --- BACKUP & EXPORT/IMPORT ---
+        function exportData() {
+            saveData();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "wallet_backup.json");
+            dlAnchorElem.click();
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedDB = JSON.parse(e.target.result);
+                    if (importedDB.liquid !== undefined && Array.isArray(importedDB.transactions)) {
+                        db = importedDB;
+                        if(!db.recurring) db.recurring = [];
+                        saveData();
+                        updateUI();
+                        alert("Backup importato con successo!");
+                    } else {
+                        alert("Il file JSON non sembra essere un backup valido di Wallet.");
+                    }
+                } catch(err) {
+                    alert("Errore durante la lettura del file di backup.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // --- SWIPE NAV ---
+        const container = document.getElementById('swipeContainer');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        function scrollToScreen(index) {
+            const screenWidth = window.innerWidth;
+            container.scrollTo({ left: screenWidth * index, behavior: 'smooth' });
+        }
+
+        container.addEventListener('scroll', () => {
+            const scrollLeft = container.scrollLeft;
+            const screenWidth = window.innerWidth;
+            const activeIndex = Math.round(scrollLeft / screenWidth);
+            navItems.forEach((nav, i) => {
+                if(i === activeIndex) nav.classList.add('active'); else nav.classList.remove('active');
+            });
+        });
+
+        // Avvio Iniziale
+        updateUI();
+    </script>
+</body>
+</html>
