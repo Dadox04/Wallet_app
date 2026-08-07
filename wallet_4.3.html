@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Wallet 4.4</title>
+    <title>Wallet 4.3</title>
     <style>
         :root {
             --bg-dark: #000000;
@@ -400,7 +400,7 @@
             <div class="screen-header">
                 <span data-i18n="hdr_accounts">Liquidità & Conti</span>
                 <div class="header-actions">
-                    <span class="version-tag">v4.4</span>
+                    <span class="version-tag">v4.3</span>
                     <div class="icon-btn privacy-icon" onclick="togglePrivacy()" id="privacyBtn">👁️</div>
                     <div class="icon-btn" onclick="openModal('settings')" id="settingsBtn">⚙️</div>
                 </div>
@@ -436,7 +436,7 @@
             <div class="screen-header">
                 <span data-i18n="hdr_savings">Risparmi & Progetti</span>
                 <div class="header-actions">
-                    <span class="version-tag">v4.4</span>
+                    <span class="version-tag">v4.3</span>
                     <div class="icon-btn privacy-icon" onclick="togglePrivacy()">👁️</div>
                     <div class="icon-btn" onclick="openModal('settings')">⚙️</div>
                 </div>
@@ -464,7 +464,7 @@
             <div class="screen-header">
                 <span data-i18n="hdr_investments">Investimenti</span>
                 <div class="header-actions">
-                    <span class="version-tag">v4.4</span>
+                    <span class="version-tag">v4.3</span>
                     <div class="icon-btn privacy-icon" onclick="togglePrivacy()">👁️</div>
                     <div class="icon-btn" onclick="openModal('settings')">⚙️</div>
                 </div>
@@ -485,7 +485,7 @@
             <div class="screen-header">
                 <span data-i18n="hdr_stats">Statistiche & Budget</span>
                 <div class="header-actions">
-                    <span class="version-tag">v4.4</span>
+                    <span class="version-tag">v4.3</span>
                     <div class="icon-btn privacy-icon" onclick="togglePrivacy()">👁️</div>
                     <div class="icon-btn" onclick="openModal('settings')">⚙️</div>
                 </div>
@@ -520,6 +520,7 @@
                     <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
                 </label>
             </div>
+            <button class="btn action" style="width: 100%; margin-bottom: 15px; background:#5e5ce6;" onclick="openModal('settings')" data-i18n="btn_security">🔒 SICUREZZA</button>
             <button class="btn expense" style="width: 100%; background: rgba(255, 69, 58, 0.2); color: var(--acc-red); border: 1px solid var(--acc-red);" onclick="clearHistory()" data-i18n="btn_clear_history">🗑 SVUOTA CRONOLOGIA</button>
         </section>
 
@@ -700,7 +701,7 @@
                 opt_this_week: '📅 Questa Settimana', opt_this_month: '📅 Questo Mese', opt_this_year: '📅 Quest\'Anno', opt_always: '📅 Sempre (Tutto)',
                 opt_chart_bars: '📊 Grafico: Barre Budget', opt_chart_pct: '🥧 Grafico: Percentuale Usato', opt_chart_compare: '⚖️ Grafico: Entrate vs Uscite', opt_chart_top: '🔥 Grafico: Top 5 Spese',
                 btn_budget: '⚙️ BUDGET', lbl_data_backup: 'Dati & Backup', btn_export: '💾 ESPORTA', btn_import: '📁 IMPORTA',
-                btn_clear_history: '🗑 SVUOTA CRONOLOGIA',
+                btn_security: '🔒 SICUREZZA', btn_clear_history: '🗑 SVUOTA CRONOLOGIA',
                 nav_accounts: 'Conti', nav_projects: 'Progetti', nav_investments: 'Investimenti', nav_stats: 'Statistiche',
                 lock_title: 'Bentornato', lock_subtitle: 'Inserisci il PIN per sbloccare', lock_forgot: 'PIN dimenticato? Reimposta l\'app',
                 lbl_amount: 'Importo', lbl_desc: 'Descrizione', lbl_account_ref: 'Conto di Riferimento', lbl_category: 'Categoria', lbl_link_project: 'Collega a Progetto (Opzionale)', lbl_linked_project: 'Progetto Associato (Opzionale)', lbl_account_name: 'Nome Conto (es. Revolut, Contanti...)', lbl_initial_balance: 'Saldo Iniziale', lbl_charge_account: 'Conto da Addebitare', lbl_monthly_day: 'Giorno addebito mensile (1-31)', lbl_expected_amount: 'Importo Previsto', lbl_due_date: 'Data Scadenza', lbl_expected_account: 'Conto Previsto', lbl_goal_name: 'Nome Obiettivo', lbl_target_amount: 'Cifra da raggiungere', lbl_project_name: 'Nome Progetto', lbl_project_budget: 'Budget Massimo Previsto', lbl_optional: 'Opzionale', lbl_budget_essential: 'Budget Essenziale', lbl_budget_passions: 'Budget Passioni', lbl_budget_leisure: 'Budget Svago', lbl_which_pot: 'Dove vuoi mettere i soldi?', lbl_deduct_from: 'Scala dal Conto', lbl_deduct_checkbox: 'Sottrai dal Conto selezionato', lbl_investment_name: 'Nome Investimento', lbl_capital_invested: 'Capitale Investito', lbl_currency: 'Valuta', lbl_language: 'Lingua / Language', lbl_theme: 'Tema', lbl_autolock: 'Blocco Automatico', lbl_lock_after: 'Blocca l\'app dopo', lbl_pin_protection: 'Protezione con PIN', lbl_new_pin: 'Nuovo PIN (4 cifre)', lbl_confirm_pin: 'Conferma PIN', lbl_current_pin: 'PIN Attuale', lbl_confirm_new_pin: 'Conferma Nuovo PIN', btn_confirm: 'Conferma', btn_create_account: 'Crea Conto', btn_add_short: 'Aggiungi', btn_save_recurring: 'Salva Spesa Fissa', btn_save_scheduled: 'Salva Spesa Programmata', btn_create: 'Crea', btn_create_project: 'Crea Progetto', btn_save_budgets: 'Salva Tetti', btn_transfer: 'Trasferisci', btn_save: 'Salva', btn_enable_protection: 'Attiva Protezione', btn_disable_protection: 'Disattiva Protezione', btn_change_pin: 'Cambia PIN', modal_new_income: 'Nuova Entrata', modal_new_expense: 'Registra Spesa', modal_new_account: 'Nuovo Conto', modal_recurring: 'Uscite Fisse / Abbonamenti', modal_scheduled: 'Spese Programmate', modal_new_pot: 'Crea Salvadanaio', modal_new_project: 'Nuovo Progetto', modal_budget_config: 'Imposta Tetti di Spesa', modal_add_savings: 'Metti da parte', modal_new_asset: 'Nuovo Investimento', modal_settings: 'Impostazioni', hdr_new_recurring: 'Nuova Spesa Fissa', hdr_new_scheduled: 'Nuova Spesa Programmata', hdr_change_pin: 'Cambia PIN', opt_no_project: 'Nessun Progetto specifico', opt_no_project_short: 'Nessun Progetto', opt_off: 'Disattivata', opt_on: 'Attivata', cat_essential: 'Essenziale', cat_passions: 'Progetti & Passioni', cat_leisure: 'Svago / Extra', cat_passions_short: 'Passioni', cat_leisure_short: 'Svago', cat_income: 'Entrata', cat_savings: 'Risparmio', period_weekly: 'Settimanale', period_monthly: 'Mensile', period_yearly: 'Annuale', badge_auto_day: 'Auto: Giorno {day}', badge_manual: 'Manuale', empty_recurring: 'Nessuna uscita fissa creata.', empty_scheduled: 'Nessuna spesa programmata.', empty_create_pot_first: 'Crea prima un salvadanaio!', msg_last_conversion: 'Ultimo cambio: 1 {from} = {rate} {to} (dato del {date})', msg_currency_hint: 'Cambiando valuta, tutti gli importi salvati verranno convertiti usando il tasso di cambio attuale (serve connessione a internet).', msg_autolock_hint_on: 'Passato questo tempo senza usare l\'app (o tornando da un\'altra scheda/app), ti verrà richiesto di nuovo il PIN.', msg_autolock_hint_off: 'Attiva la protezione con PIN qui sotto perché questa funzione abbia effetto.', msg_pin_on: 'I tuoi dati sono cifrati e protetti da PIN su questo dispositivo.', msg_pin_off: 'I dati sono salvati in chiaro su questo dispositivo. Attiva la protezione per cifrarli con un PIN a 4 cifre.', msg_pin_forget_warning: 'Se dimentichi il PIN, i dati salvati non potranno essere recuperati in alcun modo.', msg_pin_disable_hint: 'Disattivando, i dati verranno salvati in chiaro sul dispositivo (nessuna cifratura, nessun PIN richiesto all\'apertura).', lock_never: 'Mai', lock_1min: '1 minuto di inattività', lock_5min: '5 minuti di inattività', lock_15min: '15 minuti di inattività', lock_30min: '30 minuti di inattività', theme_dark: 'Scuro', theme_light: 'Chiaro', theme_ocean: 'Oceano', theme_forest: 'Foresta', ph_expense_desc: 'es. Ricambi, Benzina, Spesa...', ph_account_name: 'Nome conto', ph_recurring_desc: 'es. Netflix, Palestra...', ph_optional_manual: 'Opzionale (Vuoto per manuale)', ph_scheduled_desc: 'es. Bollo Auto, Dentista...', ph_pot_name: 'es. Fondo Emergenze...', ph_project_name: 'es. Lavori Scooter / Viaggio', ph_investment_name: 'es. ETF / Azioni...', cur_EUR: 'Euro', cur_USD: 'Dollaro USA', cur_GBP: 'Sterlina', cur_CHF: 'Franco Svizzero', cur_JPY: 'Yen Giapponese', cur_CAD: 'Dollaro Canadese', cur_AUD: 'Dollaro Australiano',
@@ -721,7 +722,7 @@
                 opt_this_week: '📅 This Week', opt_this_month: '📅 This Month', opt_this_year: '📅 This Year', opt_always: '📅 Always (All time)',
                 opt_chart_bars: '📊 Chart: Budget Bars', opt_chart_pct: '🥧 Chart: % Used', opt_chart_compare: '⚖️ Chart: Income vs Expenses', opt_chart_top: '🔥 Chart: Top 5 Expenses',
                 btn_budget: '⚙️ BUDGET', lbl_data_backup: 'Data & Backup', btn_export: '💾 EXPORT', btn_import: '📁 IMPORT',
-                btn_clear_history: '🗑 CLEAR HISTORY',
+                btn_security: '🔒 SECURITY', btn_clear_history: '🗑 CLEAR HISTORY',
                 nav_accounts: 'Accounts', nav_projects: 'Projects', nav_investments: 'Investments', nav_stats: 'Stats',
                 lock_title: 'Welcome back', lock_subtitle: 'Enter your PIN to unlock', lock_forgot: 'Forgot PIN? Reset the app',
                 lbl_amount: 'Amount', lbl_desc: 'Description', lbl_account_ref: 'Account', lbl_category: 'Category', lbl_link_project: 'Link to Project (Optional)', lbl_linked_project: 'Linked Project (Optional)', lbl_account_name: 'Account Name (e.g. Revolut, Cash...)', lbl_initial_balance: 'Initial Balance', lbl_charge_account: 'Account to Charge', lbl_monthly_day: 'Monthly charge day (1-31)', lbl_expected_amount: 'Expected Amount', lbl_due_date: 'Due Date', lbl_expected_account: 'Expected Account', lbl_goal_name: 'Goal Name', lbl_target_amount: 'Target Amount', lbl_project_name: 'Project Name', lbl_project_budget: 'Max Expected Budget', lbl_optional: 'Optional', lbl_budget_essential: 'Essential Budget', lbl_budget_passions: 'Passions Budget', lbl_budget_leisure: 'Leisure Budget', lbl_which_pot: 'Where do you want to put the money?', lbl_deduct_from: 'Deduct from Account', lbl_deduct_checkbox: 'Deduct from selected Account', lbl_investment_name: 'Investment Name', lbl_capital_invested: 'Capital Invested', lbl_currency: 'Currency', lbl_language: 'Language / Lingua', lbl_theme: 'Theme', lbl_autolock: 'Auto-Lock', lbl_lock_after: 'Lock the app after', lbl_pin_protection: 'PIN Protection', lbl_new_pin: 'New PIN (4 digits)', lbl_confirm_pin: 'Confirm PIN', lbl_current_pin: 'Current PIN', lbl_confirm_new_pin: 'Confirm New PIN', btn_confirm: 'Confirm', btn_create_account: 'Create Account', btn_add_short: 'Add', btn_save_recurring: 'Save Recurring Expense', btn_save_scheduled: 'Save Planned Expense', btn_create: 'Create', btn_create_project: 'Create Project', btn_save_budgets: 'Save Limits', btn_transfer: 'Transfer', btn_save: 'Save', btn_enable_protection: 'Enable Protection', btn_disable_protection: 'Disable Protection', btn_change_pin: 'Change PIN', modal_new_income: 'New Income', modal_new_expense: 'Record Expense', modal_new_account: 'New Account', modal_recurring: 'Recurring Expenses / Subscriptions', modal_scheduled: 'Planned Expenses', modal_new_pot: 'Create Savings Pot', modal_new_project: 'New Project', modal_budget_config: 'Set Spending Limits', modal_add_savings: 'Add to Savings', modal_new_asset: 'New Investment', modal_settings: 'Settings', hdr_new_recurring: 'New Recurring Expense', hdr_new_scheduled: 'New Planned Expense', hdr_change_pin: 'Change PIN', opt_no_project: 'No specific Project', opt_no_project_short: 'No Project', opt_off: 'Off', opt_on: 'On', cat_essential: 'Essential', cat_passions: 'Projects & Passions', cat_leisure: 'Leisure / Extra', cat_passions_short: 'Passions', cat_leisure_short: 'Leisure', cat_income: 'Income', cat_savings: 'Savings', period_weekly: 'Weekly', period_monthly: 'Monthly', period_yearly: 'Yearly', badge_auto_day: 'Auto: Day {day}', badge_manual: 'Manual', empty_recurring: 'No recurring expense created yet.', empty_scheduled: 'No planned expense yet.', empty_create_pot_first: 'Create a savings pot first!', msg_last_conversion: 'Last conversion: 1 {from} = {rate} {to} (data from {date})', msg_currency_hint: 'Changing currency will convert all saved amounts using the current exchange rate (requires internet connection).', msg_autolock_hint_on: 'After this time without using the app (or returning from another tab/app), you\'ll be asked for the PIN again.', msg_autolock_hint_off: 'Enable PIN protection below for this to take effect.', msg_pin_on: 'Your data is encrypted and PIN-protected on this device.', msg_pin_off: 'Your data is stored unencrypted on this device. Enable protection to encrypt it with a 4-digit PIN.', msg_pin_forget_warning: 'If you forget your PIN, saved data cannot be recovered in any way.', msg_pin_disable_hint: 'Disabling will store data unencrypted on this device (no encryption, no PIN required to open).', lock_never: 'Never', lock_1min: '1 minute of inactivity', lock_5min: '5 minutes of inactivity', lock_15min: '15 minutes of inactivity', lock_30min: '30 minutes of inactivity', theme_dark: 'Dark', theme_light: 'Light', theme_ocean: 'Ocean', theme_forest: 'Forest', ph_expense_desc: 'e.g. Parts, Gas, Groceries...', ph_account_name: 'Account name', ph_recurring_desc: 'e.g. Netflix, Gym...', ph_optional_manual: 'Optional (Leave empty for manual)', ph_scheduled_desc: 'e.g. Car Tax, Dentist...', ph_pot_name: 'e.g. Emergency Fund...', ph_project_name: 'e.g. Scooter Repairs / Trip', ph_investment_name: 'e.g. ETF / Stocks...', cur_EUR: 'Euro', cur_USD: 'US Dollar', cur_GBP: 'British Pound', cur_CHF: 'Swiss Franc', cur_JPY: 'Japanese Yen', cur_CAD: 'Canadian Dollar', cur_AUD: 'Australian Dollar',
