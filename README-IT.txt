@@ -1,4 +1,4 @@
-WALLET 4.4 — GUIDA UTENTE
+WALLET 4.6 — GUIDA UTENTE
 ================================
 
 Un'app per gestire le tue finanze personali direttamente dal browser.
@@ -40,6 +40,7 @@ C) 📈 INVESTIMENTI
 
 D) 📊 STATISTICHE
    - Grafici interattivi: barre budget, % usata, entrate vs uscite, top 5 spese.
+   - Genera e scarica report PDF.
    - Esporta / importa i dati, imposta i tetti di spesa.
 
 
@@ -125,8 +126,31 @@ Nella schermata "Statistiche & Budget" puoi:
    - Se superi il limite l'avviso diventa rosso.
 
 
-9. IMPOSTAZIONI
------------------
+9. REPORT PDF
+---------------
+
+Dalla schermata "Statistiche & Budget" tocca "📄 REPORT PDF" per generare
+un report finanziario professionale da scaricare e condividere.
+
+Periodi disponibili:
+• Questa Settimana
+• Questo Mese
+• Ultimi 6 Mesi
+• Quest'Anno
+
+Il PDF include:
+• Riepilogo: entrate totali, uscite totali e saldo netto.
+• Ripartizione per Categoria: quanto hai speso in ogni categoria con percentuali.
+• Andamento Mensile: entrate, uscite e netto mese per mese (se copre più di un mese).
+• Saldi Conti Attuali: istantanea di tutti i tuoi conti al momento della generazione.
+
+NOTA: il PDF viene generato interamente sul tuo dispositivo. La prima volta
+serve una connessione internet per scaricare la libreria jsPDF dal CDN.
+Dopo di che funziona anche offline.
+
+
+10. IMPOSTAZIONI
+------------------
 
 Tocca l'ingranaggio ⚙️ in alto a destra.
 
@@ -147,7 +171,7 @@ Tocca l'ingranaggio ⚙️ in alto a destra.
 • 🔐 Protezione PIN: attiva, disattiva o cambia il PIN di sblocco.
 
 
-10. BACKUP E RIPRISTINO
+11. BACKUP E RIPRISTINO
 -------------------------
 
 💾 ESPORTA
@@ -167,7 +191,7 @@ Tocca l'ingranaggio ⚙️ in alto a destra.
    - Utile per ripartire da zero senza ricreare i conti.
 
 
-11. DOMANDE FREQUENTI
+12. DOMANDE FREQUENTI
 -----------------------
 
 D: I miei dati sono al sicuro?
@@ -178,8 +202,8 @@ D: Cosa succede se cancello i dati del browser?
 R: Perdi tutto. Per questo è fondamentale fare regolarmente backup JSON.
 
 D: Posso usarla offline?
-R: Sì, tranne per il cambio valuta che richiede internet per recuperare
-   il tasso di cambio aggiornato.
+R: Sì, tranne per il cambio valuta e la prima generazione di PDF che
+   richiedono internet per recuperare risorse esterne.
 
 D: Perché non vedo le notifiche del browser?
 R: Devi autorizzare le notifiche quando il browser te lo chiede.
@@ -195,7 +219,7 @@ R: Sì, tocca il pulsante ✎ accanto al movimento nella lista.
    Puoi cambiare importo, descrizione, conto, categoria e progetto.
 
 
-12. SUGGERIMENTI PRATICI
+13. SUGGERIMENTI PRATICI
 --------------------------
 
 1. Crea subito i tuoi conti reali (Conto Corrente, Contanti...).
@@ -203,8 +227,9 @@ R: Sì, tocca il pulsante ✎ accanto al movimento nella lista.
 3. Usa i Progetti per spese importanti (viaggi, ristrutturazioni...).
 4. Attiva le Spese Fisse con addebito automatico per non dimenticare
    mai un abbonamento.
-5. Esporta un backup almeno una volta al mese.
-6. Se usi il PIN, annotalo in un luogo sicuro (gestore password).
+5. Genera un report PDF prima di un incontro con la banca o il commercialista.
+6. Esporta un backup JSON almeno una volta al mese.
+7. Se usi il PIN, annotalo in un luogo sicuro (gestore password).
 
 
 Buona gestione del budget! 💰

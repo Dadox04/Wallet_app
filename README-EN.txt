@@ -1,4 +1,4 @@
-WALLET 4.4 — USER GUIDE
+WALLET 4.6 — USER GUIDE
 ================================
 
 A personal finance app that runs directly in your browser.
@@ -40,6 +40,7 @@ C) 📈 INVESTMENTS
 
 D) 📊 STATISTICS
    - Interactive charts: budget bars, % used, income vs expenses, top 5 expenses.
+   - Generate and download PDF reports.
    - Export / import data, set spending limits.
 
 
@@ -124,8 +125,31 @@ In the "Statistics & Budget" screen you can:
    - If you exceed the limit the alert turns red.
 
 
-9. SETTINGS
--------------
+9. PDF REPORTS
+----------------
+
+From the "Statistics & Budget" screen tap "📄 REPORT PDF" to generate
+a professional financial report that you can download and share.
+
+Available periods:
+• This Week
+• This Month
+• Last 6 Months
+• This Year
+
+The PDF includes:
+• Summary: total income, total expenses and net balance.
+• Category Breakdown: how much you spent in each category with percentages.
+• Monthly Trend: month-by-month income, expenses and net (if more than one month is covered).
+• Current Account Balances: snapshot of all your accounts at the time of generation.
+
+NOTE: the PDF is generated entirely on your device. The first time you use
+this feature an internet connection is required to download the jsPDF library
+from the CDN. After that it works offline too.
+
+
+10. SETTINGS
+--------------
 
 Tap the gear icon ⚙️ in the top-right corner.
 
@@ -145,7 +169,7 @@ Tap the gear icon ⚙️ in the top-right corner.
 • 🔐 PIN Protection: enable, disable or change the unlock PIN.
 
 
-10. BACKUP & RESTORE
+11. BACKUP & RESTORE
 ----------------------
 
 💾 EXPORT
@@ -165,7 +189,7 @@ Tap the gear icon ⚙️ in the top-right corner.
    - Useful for starting fresh without recreating accounts.
 
 
-11. FAQ
+12. FAQ
 ---------
 
 Q: Is my data safe?
@@ -176,8 +200,8 @@ Q: What happens if I clear browser data?
 A: You lose everything. That's why regular JSON backups are essential.
 
 Q: Can I use it offline?
-A: Yes, except for currency conversion which needs internet to fetch the
-   current exchange rate.
+A: Yes, except for currency conversion and the very first PDF generation
+   which need internet to fetch external resources.
 
 Q: Why don't I see browser notifications?
 A: You must allow notifications when the browser asks.
@@ -193,15 +217,16 @@ A: Yes, tap the ✎ button next to the transaction in the list.
    You can change amount, description, account, category and project.
 
 
-12. PRACTICAL TIPS
+13. PRACTICAL TIPS
 --------------------
 
 1. Create your real accounts right away (Checking Account, Cash...).
 2. Set monthly budgets to keep expenses under control.
 3. Use Projects for important expenses (trips, renovations...).
 4. Enable automatic recurring charges so you never forget a subscription.
-5. Export a backup at least once a month.
-6. If you use a PIN, write it down in a safe place (password manager).
+5. Generate a PDF report before a meeting with your bank or accountant.
+6. Export a JSON backup at least once a month.
+7. If you use a PIN, write it down in a safe place (password manager).
 
 
 Happy budgeting! 💰
