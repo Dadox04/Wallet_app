@@ -1,4 +1,4 @@
-WALLET 4.6 — GUIDA UTENTE
+WALLET 5.0 — GUIDA UTENTE
 ================================
 
 Un'app per gestire le tue finanze personali direttamente dal browser.
@@ -28,7 +28,7 @@ L'app si naviga scorrendo orizzontalmente o toccando le icone in basso:
 A) 💸 CONTI (Liquidità)
    - Visualizza il saldo totale e l'elenco dei conti.
    - Registra entrate, uscite, spese fisse e programmate.
-   - Cerca tra i movimenti recenti.
+   - Cerca tra i movimenti recenti per descrizione o categoria.
 
 B) 🏦 PROGETTI (Risparmi)
    - Crea "salvadanai" per obiettivi (es. vacanze, emergenze).
@@ -40,7 +40,7 @@ C) 📈 INVESTIMENTI
 
 D) 📊 STATISTICHE
    - Grafici interattivi: barre budget, % usata, entrate vs uscite, top 5 spese.
-   - Genera e scarica report PDF.
+   - Genera e scarica report PDF ed Excel.
    - Esporta / importa i dati, imposta i tetti di spesa.
 
 
@@ -66,6 +66,7 @@ Ogni movimento è associato a un conto specifico.
 
 Per creare un conto: tocca "+ CONTO" nella schermata Conti.
 Per modificarlo o eliminarlo: usa i pulsanti ✎ e × accanto al nome.
+Puoi anche correggere il saldo di un conto in qualsiasi momento.
 
 
 5. SPESE FISSE E PROGRAMMATE
@@ -79,9 +80,10 @@ Per modificarlo o eliminarlo: usa i pulsanti ✎ e × accanto al nome.
 
 📅 SPESE PROGRAMMATE
    - Inserisci spese future con data di scadenza (es. bollo auto, dentista).
-   - L'app ti avvisa con un toast quando mancano 7 giorni o meno.
+   - L'app ti avvisa con un toast e, se autorizzato, con una notifica del browser
+     quando mancano 7 giorni o meno.
    - Quando paghi, premi il pulsante 💰 per confermare il pagamento e
-     registrarlo come spesa effettiva.
+     registrarlo come spesa effettiva (puoi correggere l'importo al volo).
 
 
 6. RISPARMI E PROGETTI
@@ -92,6 +94,7 @@ Per modificarlo o eliminarlo: usa i pulsanti ✎ e × accanto al nome.
    - Aggiungi denaro manualmente con il pulsante "AGGIUNGI".
    - Puoi scegliere se scalare l'importo da un conto (registrando
      automaticamente una spesa in categoria "Risparmio").
+   - Tocca ✎ per modificare nome o target di un salvadanaio esistente.
 
 🎯 PROGETTI
    - Ideale per lavori, viaggi o acquisti mirati.
@@ -105,6 +108,7 @@ Per modificarlo o eliminarlo: usa i pulsanti ✎ e × accanto al nome.
 
 Registra i tuoi asset finanziari per tenere traccia del capitale investito.
 Questo valore è separato dalla liquidità e dai risparmi.
+Puoi modificare un investimento inserito toccando il pulsante ✎.
 
 
 8. STATISTICHE E BUDGET
@@ -149,7 +153,39 @@ serve una connessione internet per scaricare la libreria jsPDF dal CDN.
 Dopo di che funziona anche offline.
 
 
-10. IMPOSTAZIONI
+10. REPORT EXCEL
+------------------
+
+Oltre al PDF puoi esportare un file Excel con l'andamento storico mensile
+completo e una previsione automatica per i prossimi 3 mesi.
+
+Il file contiene due fogli:
+• Andamento Mensile — riepilogo di entrate, spese per categoria, totale uscite
+  e netto di ogni mese registrato.
+• Previsione — stima dei prossimi 3 mesi calcolata con le formule FORECAST
+  di Excel (regressione lineare sui dati storici). Se hai meno di 2 mesi di
+  dati, la previsione non è ancora disponibile.
+
+NOTA: anche l'export Excel richiede internet la prima volta per caricare
+la libreria SheetJS. Successivamente funziona offline.
+
+
+11. MODIFICA MOVIMENTI E ELEMENTI
+-----------------------------------
+
+Hai sbagliato a inserire una spesa? Nessun problema.
+
+• Transazioni: tocca ✎ accanto a un movimento nella lista per cambiare
+  importo, descrizione, conto, categoria o progetto associato.
+• Conti: tocca ✎ per rinominare un conto o correggerne il saldo.
+• Salvadanai: tocca ✎ per modificare nome e cifra target.
+• Investimenti: tocca ✎ per aggiornare nome e capitale.
+
+Eliminando una transazione, il saldo del conto collegato viene
+automaticamente riallineato.
+
+
+12. IMPOSTAZIONI
 ------------------
 
 Tocca l'ingranaggio ⚙️ in alto a destra.
@@ -160,18 +196,25 @@ Tocca l'ingranaggio ⚙️ in alto a destra.
 
 • 🌍 Lingua: Italiano / English.
 
-• 🎨 Tema: Scuro, Chiaro, Oceano, Foresta.
+• 🎨 Tema: Scuro, Chiaro, Oceano, Foresta, Austero, Glaciale.
+  Gli ultimi due (Austero e Glaciale) usano colori spenti e freddi
+  studiati apposta per diminuire la voglia di spendere.
 
 • 👁️ Privacy: attiva la modalità "occhiolino" per nascondere
   tutte le cifre sensibili (mostra *** al posto degli importi).
 
 • 🔒 Blocco automatico: scegli dopo quanto tempo di inattività
-  l'app richiede nuovamente il PIN.
+  l'app richiede nuovamente il PIN (o "Mai" per disattivarlo).
 
 • 🔐 Protezione PIN: attiva, disattiva o cambia il PIN di sblocco.
+  Il cambio PIN avviene senza dover disattivare la protezione:
+  inserisci il PIN attuale, poi il nuovo PIN due volte.
+
+• 🔔 Notifiche: se autorizzi il browser, riceverai notifiche push
+  per spese programmate in scadenza e per avvisi di budget.
 
 
-11. BACKUP E RIPRISTINO
+13. BACKUP E RIPRISTINO
 -------------------------
 
 💾 ESPORTA
@@ -191,7 +234,7 @@ Tocca l'ingranaggio ⚙️ in alto a destra.
    - Utile per ripartire da zero senza ricreare i conti.
 
 
-12. DOMANDE FREQUENTI
+14. DOMANDE FREQUENTI
 -----------------------
 
 D: I miei dati sono al sicuro?
@@ -202,7 +245,7 @@ D: Cosa succede se cancello i dati del browser?
 R: Perdi tutto. Per questo è fondamentale fare regolarmente backup JSON.
 
 D: Posso usarla offline?
-R: Sì, tranne per il cambio valuta e la prima generazione di PDF che
+R: Sì, tranne per il cambio valuta e la prima generazione di PDF/Excel che
    richiedono internet per recuperare risorse esterne.
 
 D: Perché non vedo le notifiche del browser?
@@ -218,8 +261,13 @@ D: Posso modificare una transazione dopo averla inserita?
 R: Sì, tocca il pulsante ✎ accanto al movimento nella lista.
    Puoi cambiare importo, descrizione, conto, categoria e progetto.
 
+D: L'app vibra quando tocco i pulsanti. Posso disattivarlo?
+R: Il feedback aptico dipende dalle impostazioni di sistema del tuo
+   dispositivo. Se le vibrazioni sono attive, l'app le usa per confermare
+   ogni tocco sui tasti principali.
 
-13. SUGGERIMENTI PRATICI
+
+15. SUGGERIMENTI PRATICI
 --------------------------
 
 1. Crea subito i tuoi conti reali (Conto Corrente, Contanti...).
@@ -228,8 +276,10 @@ R: Sì, tocca il pulsante ✎ accanto al movimento nella lista.
 4. Attiva le Spese Fisse con addebito automatico per non dimenticare
    mai un abbonamento.
 5. Genera un report PDF prima di un incontro con la banca o il commercialista.
-6. Esporta un backup JSON almeno una volta al mese.
-7. Se usi il PIN, annotalo in un luogo sicuro (gestore password).
+6. Esporta il report Excel per analizzare l'andamento e le previsioni
+   direttamente in foglio di calcolo.
+7. Esporta un backup JSON almeno una volta al mese.
+8. Se usi il PIN, annotalo in un luogo sicuro (gestore password).
 
 
 Buona gestione del budget! 💰
