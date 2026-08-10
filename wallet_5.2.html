@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Wallet 5.3</title>
+    <title>Wallet 5.2</title>
     <style>
         :root {
             --bg-dark: #000000;
@@ -64,40 +64,32 @@
         }
 
         [data-theme="austere"] {
-            --bg-dark: #1a1815;
-            --card-bg: #26221d;
-            --text-main: #cfc6ba;
-            --text-sub: #8f857a;
-            --acc-green: #7c8f6a;
-            --acc-red: #973a28;
-            --acc-blue: #6b625a;
-            --acc-purple: #5c4a3d;
-            --acc-orange: #8a7355;
-            --acc-secondary: #4f4030;
-            --border: #332e27;
+            --bg-dark: #17181a;
+            --card-bg: #212224;
+            --text-main: #c7c8ca;
+            --text-sub: #838485;
+            --acc-green: #6f8f6a;
+            --acc-red: #b3402f;
+            --acc-blue: #56707f;
+            --acc-purple: #746a78;
+            --acc-orange: #96703c;
+            --acc-secondary: #6b5d4f;
+            --border: #2c2d2f;
         }
-        [data-theme="austere"] .badge.essenziale { background: rgba(138, 115, 85, 0.22); }
-        [data-theme="austere"] .badge.passioni { background: rgba(107, 98, 90, 0.22); }
-        [data-theme="austere"] .badge.svago { background: rgba(92, 74, 61, 0.28); }
-        [data-theme="austere"] .badge.risparmio, [data-theme="austere"] .badge.entrata { background: rgba(124, 143, 106, 0.2); }
 
         [data-theme="glacial"] {
-            --bg-dark: #0c1216;
-            --card-bg: #17222a;
-            --text-main: #c3d4dc;
-            --text-sub: #788e99;
-            --acc-green: #52887f;
-            --acc-red: #c0433f;
-            --acc-blue: #3f6076;
-            --acc-purple: #2f4a5c;
-            --acc-orange: #5d7f8f;
-            --acc-secondary: #2a3d4a;
-            --border: #1f2c35;
+            --bg-dark: #10161b;
+            --card-bg: #1b232a;
+            --text-main: #b8c2c9;
+            --text-sub: #78858d;
+            --acc-green: #5e8580;
+            --acc-red: #a84a45;
+            --acc-blue: #3d6b82;
+            --acc-purple: #5c6478;
+            --acc-orange: #8a7048;
+            --acc-secondary: #4a5a68;
+            --border: #232d35;
         }
-        [data-theme="glacial"] .badge.essenziale { background: rgba(93, 127, 143, 0.25); }
-        [data-theme="glacial"] .badge.passioni { background: rgba(63, 96, 118, 0.28); }
-        [data-theme="glacial"] .badge.svago { background: rgba(47, 74, 92, 0.3); }
-        [data-theme="glacial"] .badge.risparmio, [data-theme="glacial"] .badge.entrata { background: rgba(82, 136, 127, 0.2); }
 
         body, html {
             margin: 0; padding: 0;
@@ -445,7 +437,7 @@
             <div class="screen-header">
                 <span data-i18n="hdr_accounts">Liquidità & Conti</span>
                 <div class="header-actions">
-                    <span class="version-tag">v5.3</span>
+                    <span class="version-tag">v5.2</span>
                     <div class="icon-btn privacy-icon" onclick="togglePrivacy()" id="privacyBtn">👁️</div>
                     <div class="icon-btn" onclick="openModal('settings')" id="settingsBtn">⚙️</div>
                 </div>
@@ -481,7 +473,7 @@
             <div class="screen-header">
                 <span data-i18n="hdr_savings">Risparmi & Progetti</span>
                 <div class="header-actions">
-                    <span class="version-tag">v5.3</span>
+                    <span class="version-tag">v5.2</span>
                     <div class="icon-btn privacy-icon" onclick="togglePrivacy()">👁️</div>
                     <div class="icon-btn" onclick="openModal('settings')">⚙️</div>
                 </div>
@@ -509,7 +501,7 @@
             <div class="screen-header">
                 <span data-i18n="hdr_investments">Investimenti</span>
                 <div class="header-actions">
-                    <span class="version-tag">v5.3</span>
+                    <span class="version-tag">v5.2</span>
                     <div class="icon-btn privacy-icon" onclick="togglePrivacy()">👁️</div>
                     <div class="icon-btn" onclick="openModal('settings')">⚙️</div>
                 </div>
@@ -530,7 +522,7 @@
             <div class="screen-header">
                 <span data-i18n="hdr_stats">Statistiche & Budget</span>
                 <div class="header-actions">
-                    <span class="version-tag">v5.3</span>
+                    <span class="version-tag">v5.2</span>
                     <div class="icon-btn privacy-icon" onclick="togglePrivacy()">👁️</div>
                     <div class="icon-btn" onclick="openModal('settings')">⚙️</div>
                 </div>
@@ -1977,13 +1969,13 @@
                             <div class="theme-swatch-dot" style="background:#4ade80;"></div>
                             <span>${t('theme_forest')}</span>
                         </div>
-                        <div class="theme-swatch ${currentTheme === 'austere' ? 'active' : ''}" onclick="setTheme('austere')" style="background:#1a1815;">
-                            <div class="theme-swatch-dot" style="background:#973a28;"></div>
+                        <div class="theme-swatch ${currentTheme === 'austere' ? 'active' : ''}" onclick="setTheme('austere')" style="background:#17181a;">
+                            <div class="theme-swatch-dot" style="background:#b3402f;"></div>
                             <span>${t('theme_austere')}</span>
                             <span class="theme-swatch-caption">${t('theme_spend_less_caption')}</span>
                         </div>
-                        <div class="theme-swatch ${currentTheme === 'glacial' ? 'active' : ''}" onclick="setTheme('glacial')" style="background:#0c1216;">
-                            <div class="theme-swatch-dot" style="background:#c0433f;"></div>
+                        <div class="theme-swatch ${currentTheme === 'glacial' ? 'active' : ''}" onclick="setTheme('glacial')" style="background:#10161b;">
+                            <div class="theme-swatch-dot" style="background:#3d6b82;"></div>
                             <span>${t('theme_glacial')}</span>
                             <span class="theme-swatch-caption">${t('theme_spend_less_caption')}</span>
                         </div>
