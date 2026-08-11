@@ -1,5 +1,5 @@
-WALLET 5.0 — GUIDA UTENTE
-================================
+WALLET 5.5 — GUIDA UTENTE
+==========================
 
 Un'app per gestire le tue finanze personali direttamente dal browser.
 Tutti i dati restano sul tuo dispositivo (nessun server, nessun cloud).
@@ -10,14 +10,18 @@ Tutti i dati restano sul tuo dispositivo (nessun server, nessun cloud).
 
 All'apertura puoi scegliere se attivare la protezione con PIN a 4 cifre.
 
-• PIN attivo → i dati vengono cifrati con AES-256-GCM e salvati in modo sicuro.
+• PIN attivo → i dati vengono cifrati con AES-256-GCM (PBKDF2) e salvati
+  in modo sicuro sul dispositivo.
   ATTENZIONE: se dimentichi il PIN non c'è modo di recuperare i dati.
 • PIN disattivato → i dati restano in chiaro sul dispositivo.
 
-Blocco automatico: puoi impostare un timer (1 / 5 / 15 / 30 minuti) dopo il quale
-l'app si blocca automaticamente se non la usi o se passi a un'altra scheda.
+Blocco automatico: puoi impostare un timer (1 / 5 / 15 / 30 minuti o "Mai")
+dopo il quale l'app si blocca automaticamente se non la usi o se passi a
+un'altra scheda/app. Dopo 10 tentativi errati consecutivi, il tastierino
+si blocca per 5 minuti.
 
-Dopo troppi tentativi errati il tastierino si blocca per 5 minuti.
+Se dimentichi il PIN, tocca "PIN dimenticato?" nella schermata di blocco:
+questa azione cancella PERMANENTEMENTE tutti i dati e reimposta l'app.
 
 
 2. LE 4 SCHERMATE PRINCIPALI
@@ -44,7 +48,18 @@ D) 📊 STATISTICHE
    - Esporta / importa i dati, imposta i tetti di spesa.
 
 
-3. COME REGISTRARE UN MOVIMENTO
+3. CONTI MULTIPLI
+-----------------
+
+Puoi creare più conti (es. Conto Corrente, Contanti, PayPal, Revolut...).
+Ogni movimento è associato a un conto specifico.
+
+Per creare un conto: tocca "+ CONTO" nella schermata Conti.
+Per modificarlo (nome o saldo) o eliminarlo: usa i pulsanti ✎ e ×.
+Deve sempre rimanere almeno un conto attivo.
+
+
+4. COME REGISTRARE UN MOVIMENTO
 ---------------------------------
 
 Dalla schermata "Conti":
@@ -58,17 +73,6 @@ Dalla schermata "Conti":
 Puoi collegare ogni spesa a un Progetto per tracciarne l'andamento.
 
 
-4. CONTI MULTIPLI
--------------------
-
-Puoi creare più conti (es. Conto Corrente, Contanti, PayPal, Revolut...).
-Ogni movimento è associato a un conto specifico.
-
-Per creare un conto: tocca "+ CONTO" nella schermata Conti.
-Per modificarlo o eliminarlo: usa i pulsanti ✎ e × accanto al nome.
-Puoi anche correggere il saldo di un conto in qualsiasi momento.
-
-
 5. SPESE FISSE E PROGRAMMATE
 ------------------------------
 
@@ -80,8 +84,8 @@ Puoi anche correggere il saldo di un conto in qualsiasi momento.
 
 📅 SPESE PROGRAMMATE
    - Inserisci spese future con data di scadenza (es. bollo auto, dentista).
-   - L'app ti avvisa con un toast e, se autorizzato, con una notifica del browser
-     quando mancano 7 giorni o meno.
+   - L'app ti avvisa con un toast e, se autorizzato, con una notifica del
+     browser quando mancano 7 giorni o meno (o se sono scadute).
    - Quando paghi, premi il pulsante 💰 per confermare il pagamento e
      registrarlo come spesa effettiva (puoi correggere l'importo al volo).
 
@@ -154,7 +158,7 @@ Dopo di che funziona anche offline.
 
 
 10. REPORT EXCEL
-------------------
+-----------------
 
 Oltre al PDF puoi esportare un file Excel con l'andamento storico mensile
 completo e una previsione automatica per i prossimi 3 mesi.
@@ -170,13 +174,16 @@ NOTA: anche l'export Excel richiede internet la prima volta per caricare
 la libreria SheetJS. Successivamente funziona offline.
 
 
-11. MODIFICA MOVIMENTI E ELEMENTI
------------------------------------
+11. MODIFICA ED ELIMINAZIONE
+-----------------------------
 
 Hai sbagliato a inserire una spesa? Nessun problema.
 
 • Transazioni: tocca ✎ accanto a un movimento nella lista per cambiare
   importo, descrizione, conto, categoria o progetto associato.
+  ATTENZIONE: i movimenti registrati da più di un mese sono bloccati
+  (🔒) e non possono più essere modificati né eliminati, per garantire
+  l'affidabilità dello storico.
 • Conti: tocca ✎ per rinominare un conto o correggerne il saldo.
 • Salvadanai: tocca ✎ per modificare nome e cifra target.
 • Investimenti: tocca ✎ per aggiornare nome e capitale.
@@ -186,7 +193,7 @@ automaticamente riallineato.
 
 
 12. IMPOSTAZIONI
-------------------
+----------------
 
 Tocca l'ingranaggio ⚙️ in alto a destra.
 
@@ -211,11 +218,16 @@ Tocca l'ingranaggio ⚙️ in alto a destra.
   inserisci il PIN attuale, poi il nuovo PIN due volte.
 
 • 🔔 Notifiche: se autorizzi il browser, riceverai notifiche push
-  per spese programmate in scadenza e per avvisi di budget.
+  per spese programmate in scadenza e per avvisi di budget superato.
+
+• 💾 / 📁 Esporta e Importa dati (vedi sezione 13).
+
+Il feedback aptico (vibrazione leggera sui pulsanti) dipende dalle
+impostazioni di sistema del tuo dispositivo.
 
 
 13. BACKUP E RIPRISTINO
--------------------------
+------------------------
 
 💾 ESPORTA
    - Scarica un file JSON con tutti i tuoi dati.
@@ -226,16 +238,11 @@ Tocca l'ingranaggio ⚙️ in alto a destra.
    - Se il backup è cifrato, ti verrà chiesto il PIN usato al momento
      dell'esportazione.
    - L'app avvisa se il backup che stai importando è più vecchio dei
-     dati attuali sul dispositivo.
-
-🗑️ SVUOTA CRONOLOGIA
-   - Cancella tutti i movimenti (entrate, uscite, risparmi...).
-   - I saldi dei conti restano invariati.
-   - Utile per ripartire da zero senza ricreare i conti.
+     dati attuali sul dispositivo e chiede conferma prima di sovrascrivere.
 
 
 14. DOMANDE FREQUENTI
------------------------
+----------------------
 
 D: I miei dati sono al sicuro?
 R: Sì, restano solo sul tuo dispositivo. Se attivi il PIN sono cifrati
@@ -246,11 +253,12 @@ R: Perdi tutto. Per questo è fondamentale fare regolarmente backup JSON.
 
 D: Posso usarla offline?
 R: Sì, tranne per il cambio valuta e la prima generazione di PDF/Excel che
-   richiedono internet per recuperare risorse esterne.
+   richiedono internet per recuperare risorse esterne. Dopo il primo uso
+   anche PDF ed Excel funzionano offline.
 
 D: Perché non vedo le notifiche del browser?
 R: Devi autorizzare le notifiche quando il browser te lo chiede.
-   Su iOS Safari le notifiche web push possono essere limitate.
+   Su iOS Safari le notificazioni web push possono essere limitate.
 
 D: Ho dimenticato il PIN. Cosa faccio?
 R: Tocca "PIN dimenticato?" nella schermata di blocco.
@@ -260,26 +268,13 @@ R: Tocca "PIN dimenticato?" nella schermata di blocco.
 D: Posso modificare una transazione dopo averla inserita?
 R: Sì, tocca il pulsante ✎ accanto al movimento nella lista.
    Puoi cambiare importo, descrizione, conto, categoria e progetto.
+   I movimenti più vecchi di un mese sono bloccati e non modificabili.
+
+D: Perché non posso eliminare una vecchia spesa?
+R: Per mantenere affidabile lo storico finanziario, i movimenti registrati
+   da più di un mese vengono bloccati automaticamente (🔒).
 
 D: L'app vibra quando tocco i pulsanti. Posso disattivarlo?
 R: Il feedback aptico dipende dalle impostazioni di sistema del tuo
    dispositivo. Se le vibrazioni sono attive, l'app le usa per confermare
    ogni tocco sui tasti principali.
-
-
-15. SUGGERIMENTI PRATICI
---------------------------
-
-1. Crea subito i tuoi conti reali (Conto Corrente, Contanti...).
-2. Imposta i budget mensili per avere il controllo delle uscite.
-3. Usa i Progetti per spese importanti (viaggi, ristrutturazioni...).
-4. Attiva le Spese Fisse con addebito automatico per non dimenticare
-   mai un abbonamento.
-5. Genera un report PDF prima di un incontro con la banca o il commercialista.
-6. Esporta il report Excel per analizzare l'andamento e le previsioni
-   direttamente in foglio di calcolo.
-7. Esporta un backup JSON almeno una volta al mese.
-8. Se usi il PIN, annotalo in un luogo sicuro (gestore password).
-
-
-Buona gestione del budget! 💰
