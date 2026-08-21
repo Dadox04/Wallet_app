@@ -1,5 +1,5 @@
-WALLET 5.5 — GUIDA UTENTE
-==========================
+WALLET 6.0 — GUIDA UTENTE
+========================
 
 Un'app per gestire le tue finanze personali direttamente dal browser.
 Tutti i dati restano sul tuo dispositivo (nessun server, nessun cloud).
@@ -29,12 +29,12 @@ questa azione cancella PERMANENTEMENTE tutti i dati e reimposta l'app.
 
 L'app si naviga scorrendo orizzontalmente o toccando le icone in basso:
 
-A) 💸 CONTI (Liquidità)
+A) 💸 CONTI (Liquidità & Conti)
    - Visualizza il saldo totale e l'elenco dei conti.
    - Registra entrate, uscite, spese fisse e programmate.
    - Cerca tra i movimenti recenti per descrizione o categoria.
 
-B) 🏦 PROGETTI (Risparmi)
+B) 🏦 PROGETTI (Risparmi & Progetti)
    - Crea "salvadanai" per obiettivi (es. vacanze, emergenze).
    - Crea progetti con budget massimo per tracciare spese mirate.
 
@@ -42,7 +42,7 @@ C) 📈 INVESTIMENTI
    - Registra i tuoi investimenti (ETF, azioni, cripto...).
    - Tiene traccia del capitale investito.
 
-D) 📊 STATISTICHE
+D) 📊 STATISTICHE & BUDGET
    - Grafici interattivi: barre budget, % usata, entrate vs uscite, top 5 spese.
    - Genera e scarica report PDF ed Excel.
    - Esporta / importa i dati, imposta i tetti di spesa.
@@ -81,6 +81,7 @@ Puoi collegare ogni spesa a un Progetto per tracciarne l'andamento.
    - Se inserisci un "giorno di addebito" (1-31), l'app li registra
      automaticamente ogni mese nel conto scelto.
    - Senza giorno di addebito restano manuali: premi "Aggiungi" quando paghi.
+   - Puoi collegare ogni spesa fissa a un Progetto.
 
 📅 SPESE PROGRAMMATE
    - Inserisci spese future con data di scadenza (es. bollo auto, dentista).
@@ -88,6 +89,7 @@ Puoi collegare ogni spesa a un Progetto per tracciarne l'andamento.
      browser quando mancano 7 giorni o meno (o se sono scadute).
    - Quando paghi, premi il pulsante 💰 per confermare il pagamento e
      registrarlo come spesa effettiva (puoi correggere l'importo al volo).
+   - Puoi collegare ogni spesa programmata a un Progetto.
 
 
 6. RISPARMI E PROGETTI
@@ -105,6 +107,8 @@ Puoi collegare ogni spesa a un Progetto per tracciarne l'andamento.
    - Assegna un budget massimo: la barra di avanzamento diventa rossa
      se superi il limite.
    - Le spese collegate al progetto vengono sommate automaticamente.
+   - Eliminando un progetto, le spese già registrate restano nella
+     cronologia generale.
 
 
 7. INVESTIMENTI
@@ -175,7 +179,7 @@ la libreria SheetJS. Successivamente funziona offline.
 
 
 11. MODIFICA ED ELIMINAZIONE
------------------------------
+-------------------------------
 
 Hai sbagliato a inserire una spesa? Nessun problema.
 
@@ -193,7 +197,7 @@ automaticamente riallineato.
 
 
 12. IMPOSTAZIONI
-----------------
+------------------
 
 Tocca l'ingranaggio ⚙️ in alto a destra.
 
@@ -212,6 +216,12 @@ Tocca l'ingranaggio ⚙️ in alto a destra.
 
 • 🔒 Blocco automatico: scegli dopo quanto tempo di inattività
   l'app richiede nuovamente il PIN (o "Mai" per disattivarlo).
+
+• 🗄️ Conservazione Storico: scegli per quanto tempo mantenere il dettaglio
+  completo dei movimenti (Mai, 6 mesi, 1 anno, 2 anni, 3 anni, 5 anni).
+  I movimenti più vecchi vengono compattati in totali mensili per categoria
+  (ancora disponibili nei report PDF/Excel) e poi rimossi nel dettaglio
+  per alleggerire il file. Questa operazione non si può annullare.
 
 • 🔐 Protezione PIN: attiva, disattiva o cambia il PIN di sblocco.
   Il cambio PIN avviene senza dover disattivare la protezione:
