@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Wallet 5.6</title>
+    <title>Wallet 6.0</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon-192.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Wallet">
+
     <style>
         :root {
             --bg-dark: #000000;
@@ -445,7 +455,7 @@
             <div class="screen-header">
                 <span data-i18n="hdr_accounts">Liquidità & Conti</span>
                 <div class="header-actions">
-                    <span class="version-tag">v5.6</span>
+                    <span class="version-tag">v6.0</span>
                     <div class="icon-btn privacy-icon" onclick="togglePrivacy()" id="privacyBtn">👁️</div>
                     <div class="icon-btn" onclick="openModal('settings')" id="settingsBtn">⚙️</div>
                 </div>
@@ -481,7 +491,7 @@
             <div class="screen-header">
                 <span data-i18n="hdr_savings">Risparmi & Progetti</span>
                 <div class="header-actions">
-                    <span class="version-tag">v5.6</span>
+                    <span class="version-tag">v6.0</span>
                     <div class="icon-btn privacy-icon" onclick="togglePrivacy()">👁️</div>
                     <div class="icon-btn" onclick="openModal('settings')">⚙️</div>
                 </div>
@@ -509,7 +519,7 @@
             <div class="screen-header">
                 <span data-i18n="hdr_investments">Investimenti</span>
                 <div class="header-actions">
-                    <span class="version-tag">v5.6</span>
+                    <span class="version-tag">v6.0</span>
                     <div class="icon-btn privacy-icon" onclick="togglePrivacy()">👁️</div>
                     <div class="icon-btn" onclick="openModal('settings')">⚙️</div>
                 </div>
@@ -530,7 +540,7 @@
             <div class="screen-header">
                 <span data-i18n="hdr_stats">Statistiche & Budget</span>
                 <div class="header-actions">
-                    <span class="version-tag">v5.6</span>
+                    <span class="version-tag">v6.0</span>
                     <div class="icon-btn privacy-icon" onclick="togglePrivacy()">👁️</div>
                     <div class="icon-btn" onclick="openModal('settings')">⚙️</div>
                 </div>
@@ -1399,14 +1409,14 @@
             if(changed) saveData();
         }
 
-        function showToast(icon, title, text, danger) {
+        function showToast(icon, title, text, danger, onTapAction) {
             const container = document.getElementById('budgetToastContainer');
             if(!container) return;
             const el = document.createElement('div');
             el.className = 'budget-toast' + (danger ? ' danger' : '');
             el.innerHTML = `
                 <span class="toast-icon">${icon}</span>
-                <span class="toast-text"><b>${title}</b>${text}</span>
+                <span class="toast-text" ${onTapAction ? `style="cursor:pointer;" onclick="${onTapAction}"` : ''}><b>${title}</b>${text}</span>
                 <span class="toast-close" onclick="this.parentElement.remove()">×</span>
             `;
             container.appendChild(el);
@@ -2913,6 +2923,13 @@
         }
 
         bootApp();
+
+        // Registra il service worker per il funzionamento offline e l'installazione come app.
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(() => {});
+            });
+        }
     </script>
 </body>
 </html>
